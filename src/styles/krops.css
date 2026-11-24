@@ -1,0 +1,988 @@
+/* ============================================================
+   KROPS brand layer
+   Loaded after /css/base.css and
+   overrides only what changes for Krops: palette, fonts, logo, hero.
+   Selectors repeat the source's (incl. Astro data-astro-cid-*) so
+   specificity matches and source order decides.
+   ============================================================ */
+
+@font-face {
+  font-family: "Krops Type";
+  src: url(/assets/fonts/KropsType-Variable.woff2) format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- Palette ----------
+   Krops orange replaces Molagri lime as the accent; Krops black replaces
+   forest green; the neutrals lose their green tint. */
+:root {
+  --forest: #141517;
+  --moss: #3c3e42;
+  --sage: #a9abaf;
+  --mist: #ececea;
+  --cream: #fafaf9;
+  --lime: #ff4f18;
+  --krops-orange: #ff4f18;
+  --krops-black: #141517;
+  /* Foreground ink as RGB channels, for translucent lines/dots that must
+     flip with the theme: rgb(var(--ink) / 0.16). */
+  --ink: 20 21 23;
+  --font-display: "Krops Type", "Geist", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ---------- Logo (nav) ----------
+   Orange logomark + wordmark that follows the nav colour mode. Sizes come
+   from the official lockup geometry, scaled so the mark is 24px tall. */
+.nav-logo {
+  gap: 7px;
+  align-items: flex-start;
+}
+.nav-logo__mark {
+  display: inline-block;
+  flex: none;
+  width: 15.6px;
+  height: 24px;
+  background-color: var(--krops-orange);
+  -webkit-mask: url(/assets/logo/krops-logomark-white.svg) center / contain no-repeat;
+  mask: url(/assets/logo/krops-logomark-white.svg) center / contain no-repeat;
+}
+.nav-logo__wordmark {
+  width: 72px;
+  height: 16.8px;
+  margin-top: 3.5px;
+  -webkit-mask: url(/assets/logo/krops-wordmark.svg) center / contain no-repeat;
+  mask: url(/assets/logo/krops-wordmark.svg) center / contain no-repeat;
+}
+
+/* Footer giant wordmark */
+/* Show the top 75% of the wordmark at every width: the clip box keeps the
+   wordmark's width and 75% of its height (template used fixed 170/110/60px
+   heights sized for Molagri's wordmark). */
+.closer__wordmark {
+  height: auto;
+  aspect-ratio: 423.58 / 60.875; /* 98.5 * 0.80 */
+}
+.closer__wordmark-mask {
+  flex: none;
+  background-color: #8B2101;
+  opacity: 0.50; /* Krops deep orange */
+  aspect-ratio: 423.58 / 98.5;
+  -webkit-mask: url(/assets/logo/krops-wordmark.svg) left top / 100% 100% no-repeat;
+  mask: url(/assets/logo/krops-wordmark.svg) left top / 100% 100% no-repeat;
+}
+
+/* Preloader lockup keeps its own aspect ratio */
+.preloader__logo[data-astro-cid-whrugjgn] {
+  height: 44px;
+}
+
+/* ---------- Hero ---------- */
+
+/* Base layer: the per-tree colour map from the drone survey. The drone
+   video sits above it and fades out on scroll, so the footage "turns into"
+   the analysis. */
+.hs__bg[data-astro-cid-dd44gz66] {
+  background-image: url(/assets/img/hero-map-800.webp);
+  background-size: cover;
+  background-position: center;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+@media (min-width: 640px) {
+  .hs__bg[data-astro-cid-dd44gz66] {
+    background-image: url(/assets/img/hero-map-1200.webp);
+  }
+}
+@media (min-width: 1024px) {
+  .hs__bg[data-astro-cid-dd44gz66] {
+    background-image: url(/assets/img/hero-map-1600.webp);
+  }
+}
+@media (min-width: 1600px) {
+  .hs__bg[data-astro-cid-dd44gz66] {
+    background-image: url(/assets/img/hero-map-2400.webp);
+  }
+}
+
+/* The colour map is busy, so the tint deepens as the "Solusi kami" copy
+   fades in (--response-opacity is driven by the scroll script). */
+.hs__tint[data-astro-cid-dd44gz66] {
+  background: rgb(20 21 23 / calc(0.22 + 0.5 * var(--response-opacity, 0)));
+}
+.hs__problem-card[data-astro-cid-dd44gz66] {
+  background: rgba(20, 21, 23, 0.78);
+}
+
+/* Krops Type is a wide display face: smaller size, looser tracking than
+   Geist so the headline stays at 2–3 lines. */
+.hs__headline[data-astro-cid-dd44gz66] {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(28px, 3.9vw, 56px);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  max-width: 980px;
+}
+
+/* Template bug: the intro stack is a shrink-to-fit
+   flex item, so the no-wrap news pill set its width wider than the card on
+   phones and the headline overflowed with it. Cap it to the container. */
+.hs__phase-inner--stack[data-astro-cid-dd44gz66] {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Proof badge (was "Backed by") — no logo image, just the claim. */
+.hs__backedby-item[data-astro-cid-dd44gz66] {
+  color: var(--forest);
+}
+.hs__proof-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--krops-orange);
+  flex: none;
+}
+
+/* ---------- Cara kerja (5-step pinned timeline, scoped under .bh) ---------- */
+.bh {
+  --font-display: "Krops Type", "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-text: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --accent: var(--krops-orange);
+  --text-primary: var(--forest);
+  --text-muted: rgb(var(--ink) / 0.6);
+  --surface-default: var(--kt-surface, #ffffff);
+  --hairline: rgb(var(--ink) / 0.12);
+}
+/* Rail nodes: neutral ring instead of Brumby's warm brown */
+.bh .how__node b {
+  border-color: rgb(var(--ink) / 0.16);
+}
+
+/* Step titles are an ordered list now */
+.bh ol.how__titles {
+  list-style: none;
+  padding: 0;
+}
+
+/* Krops Type is a very wide face: lighter weight,
+   smaller size, wider measure so 2–3 word titles break cleanly. */
+.bh .how__label h2,
+.bh .how-phase h3 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.04;
+  font-size: clamp(1.6rem, 2.6vw, 2.55rem);
+}
+.bh .how-phase h3 {
+  max-width: 11ch;
+}
+
+/* One supporting sentence under each step title (fades with its title). */
+.bh .how-phase__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+}
+.bh .how-phase__cap {
+  max-width: 30ch;
+  font: 400 15px/1.45 var(--font-text);
+  letter-spacing: -0.01em;
+  color: var(--text-muted);
+}
+
+/* 4 → 5 steps: keep the same scroll distance per step (Brumby: 440vh / 4). */
+@media (min-width: 901px) {
+  .bh .how {
+    height: 550vh;
+  }
+}
+@media (max-width: 900px) {
+  .bh .how {
+    height: 400vh;
+  }
+  .bh .how-phase__text {
+    align-items: center;
+    gap: 8px;
+  }
+  .bh .how-phase__cap {
+    font-size: 14px;
+    text-align: center;
+    max-width: 34ch;
+  }
+  .bh .how__titles {
+    min-height: 6.4em;
+  }
+  .bh .how__label h2,
+  .bh .how-phase h3 {
+    font-size: clamp(1.2rem, 5.4vw, 2rem);
+  }
+  .bh .how-phase h3 {
+    max-width: none;
+  }
+}
+
+/* ============================================================
+   Teknologi — template's pinned story (.tech) with a Krops visual
+   (.ktv) in the video slot. Same box and masks as the source video.
+   ============================================================ */
+@property --kt-scan {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+
+/* Display font on the section titles (template uses Geist here) */
+.tech__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+}
+
+/* The video's CSS sizes by its intrinsic ratio; a div needs it explicitly. */
+.ktv {
+  aspect-ratio: 16 / 9;
+  --kt-scan: 55%;
+}
+
+/* Orthomosaic = the "subject" (where the virus sat). */
+.ktv__ortho {
+  position: absolute;
+  left: 22%;
+  top: 22%;
+  /* = 56% of the 16:9 box height, kept as a width so it can animate */
+  width: 36.9%;
+  aspect-ratio: 1400 / 1195;
+  overflow: hidden;
+}
+/* Layout moves (desktop <-> phone composition) glide instead of jumping. */
+.ktv__ortho,
+.ktv__trees,
+.ktv__tree {
+  transition:
+    left 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    top 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    width 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ktv__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.ktv__detect {
+  clip-path: inset(0 calc(100% - var(--kt-scan)) 0 0);
+}
+/* The detection layer is a cut-out (transparent between canopies), so the
+   raw photo is clipped away on the scanned side instead of showing through. */
+.ktv__layer:not(.ktv__detect) {
+  clip-path: inset(0 0 0 var(--kt-scan));
+}
+.ktv__line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--kt-scan);
+  width: 2px;
+  margin-left: -1px;
+  background: var(--krops-orange);
+  transition: opacity 0.4s ease;
+}
+
+/* Chapter 0 "Deteksi": keep scanning raw photo -> AI detection. */
+.tech__story[data-active-chapter="0"] .ktv.is-visible {
+  animation: kt-scan 6.5s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+}
+@keyframes kt-scan {
+  0% { --kt-scan: 0%; }
+  45% { --kt-scan: 100%; }
+  60% { --kt-scan: 100%; }
+  95% { --kt-scan: 0%; }
+  100% { --kt-scan: 0%; }
+}
+/* Chapter 1 "Warna": detection fully revealed, line hidden. */
+.tech__story[data-active-chapter="1"] .ktv {
+  --kt-scan: 100%;
+  transition: --kt-scan 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tech__story[data-active-chapter="1"] .ktv__line {
+  opacity: 0;
+}
+
+/* Canopy close-ups = the circle column (where the insects sat): one
+   straight column, evenly spaced, vertically centred on the map. Circle
+   height in box % = width 9.5% x 16/9 = 16.9%; each block (circle + caption)
+   ~22%, so tops 12 / 38 / 64%. */
+.ktv__trees {
+  position: absolute;
+  left: 63.5%;
+  top: 0;
+  height: 100%;
+  width: 9.5%;
+}
+.ktv__tree {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1;
+}
+/* "Deteksi": the three sit close together (2% gaps around the middle one),
+   captions hidden. "Warna": the outer two glide up and down to make room and
+   the captions fade in under each circle. */
+.ktv__tree:nth-child(1) { top: 19.1%; }
+.ktv__tree:nth-child(2) { top: 38%; }
+.ktv__tree:nth-child(3) { top: 56.9%; }
+.tech__story[data-active-chapter="1"] .ktv__tree:nth-child(1) { top: 12%; }
+.tech__story[data-active-chapter="1"] .ktv__tree:nth-child(3) { top: 64%; }
+.ktv__tree img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 var(--krops-orange);
+  transition: box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* Caption right under each circle: VARI value, then the health label. */
+.ktv__cap {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  text-align: center;
+  opacity: 0;
+  translate: 0 8px;
+  transition:
+    opacity 0.45s ease,
+    translate 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* Reveal after the circles have started to part, top to bottom. */
+.tech__story[data-active-chapter="1"] .ktv__cap {
+  opacity: 1;
+  translate: 0 0;
+  transition-delay: calc(0.25s + var(--i) * 0.08s);
+}
+.ktv__cap-value {
+  font: 400 12px/1 var(--font-mono);
+  color: var(--moss);
+}
+.ktv__cap-k {
+  color: var(--krops-orange);
+}
+.ktv__cap-label {
+  font: 500 14px/1.15 var(--font-sans);
+  letter-spacing: -0.01em;
+  color: var(--forest);
+}
+.tech__story[data-active-chapter="1"] .ktv__tree img {
+  box-shadow: 0 0 0 4px var(--krops-orange);
+}
+.tech__story[data-active-chapter="1"] .ktv__cap-value {
+  color: var(--forest);
+}
+
+/* Phones/tablets. The template overlays the crumbs on the visual (same grid
+   row) and stretches the rows to 100svh, which left a big gap under the
+   chapters. Krops: chapters -> crumbs -> visual, each in its own row, packed
+   to the top with even spacing. Inside the visual: the map full width, the
+   three circles in one symmetric row beneath it, captions under each
+   (positions are %, so the switch from the desktop composition animates).
+   Visual height in box widths (W): circles start at 0.80W (tucked into the
+   map's empty bottom edge), 0.20W tall, + caption ~0.12W = 1.16W. */
+@media (max-width: 1150px) {
+  .tech__pin {
+    grid-template-rows: auto auto auto;
+    align-content: start;
+    row-gap: 20px;
+  }
+  .tech__crumbs {
+    grid-row: 2;
+    padding: 0;
+    top: 0; /* the template's desktop offset pushed them onto the map */
+  }
+  .tech__video-wrap:has(> .ktv) {
+    grid-row: 3;
+    aspect-ratio: 1 / 1.16;
+  }
+  .ktv {
+    aspect-ratio: auto;
+    container-type: inline-size;
+  }
+  .ktv__ortho {
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .ktv__trees {
+    left: 0;
+    top: 69%;
+    width: 100%;
+    height: 17.2%;
+  }
+  .ktv__tree {
+    width: 20%;
+  }
+  /* "Deteksi": close together in the middle (2% gaps); "Warna": spread to
+     centres at 1/6, 1/2, 5/6 of the width. */
+  .ktv__tree:nth-child(1) { top: 0; left: 18%; }
+  .ktv__tree:nth-child(2) { top: 0; left: 40%; }
+  .ktv__tree:nth-child(3) { top: 0; left: 62%; }
+  .tech__story[data-active-chapter="1"] .ktv__tree:nth-child(1) { top: 0; left: 6.667%; }
+  .tech__story[data-active-chapter="1"] .ktv__tree:nth-child(3) { top: 0; left: 73.333%; }
+  .ktv__cap {
+    top: calc(100% + 6px);
+    gap: 3px;
+  }
+  .ktv__cap-value {
+    font-size: clamp(9px, 2.9cqw, 11px);
+  }
+  .ktv__cap-label {
+    font-size: clamp(10px, 3.5cqw, 13px);
+  }
+  .tech__story[data-active-chapter="1"] .ktv__tree img {
+    box-shadow: 0 0 0 3px var(--krops-orange);
+  }
+}
+/* Tablets: keep the crumbs (centred, as the template does) and cap the
+   visual so chapters + crumbs + visual still fit one pinned screen. */
+@media (min-width: 541px) and (max-width: 1150px) {
+  .tech__video-wrap:has(> .ktv) {
+    max-width: none;
+    /* what is left of the screen under nav + chapters + crumbs */
+    width: min(440px, calc((100svh - 540px) / 1.16));
+  }
+}
+/* Phones: one screen holds the chapters and the visual only. The chapter
+   rails already show progress, so the crumbs are dropped here, and the
+   intro spacing is tightened. */
+@media (max-width: 540px) {
+  .tech__pin {
+    padding-top: 88px;
+    row-gap: 24px;
+  }
+  .tech__pin {
+    grid-template-rows: auto auto;
+  }
+  .tech__crumbs {
+    display: none;
+  }
+  .tech__aside,
+  .tech__intro {
+    gap: 16px;
+  }
+  /* Full width when the screen is tall enough; on short phones shrink so
+     chapters + map + circles stay on one pinned screen (≈440px is the
+     nav + chapter text above it). */
+  .tech__video-wrap:has(> .ktv) {
+    grid-row: 2;
+    max-width: none;
+    width: min(100%, max(200px, calc((100svh - 440px) / 1.16)));
+    justify-self: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ktv,
+  .tech__story[data-active-chapter="0"] .ktv.is-visible {
+    animation: none;
+  }
+  .ktv__ortho,
+  .ktv__trees,
+  .ktv__tree,
+  .ktv__cap {
+    transition: none;
+  }
+}
+
+/* ---------- Hero poster (first video frame) ----------
+   Sits between the colour map and the video: visible from first paint,
+   covered by the video once it plays, and fading with it on scroll. */
+.hs__poster {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: var(--fx-opacity, 1);
+}
+.hs__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ============================================================
+   Tim — carousel in place of the template's two member cards
+   ============================================================ */
+.team__carousel {
+  grid-column: 2 / -1;
+  min-width: 0;
+}
+@media (max-width: 1200px) {
+  .team__carousel {
+    grid-column: 1 / -1;
+  }
+}
+
+.kteam {
+  --kteam-gap: 16px;
+}
+/* Native scroll-snap track: swipe/trackpad for free, buttons/autoplay use
+   scrollTo. Scrollbar hidden; the dots show position instead. */
+.kteam__track {
+  display: flex;
+  gap: var(--kteam-gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.kteam__track::-webkit-scrollbar {
+  display: none;
+}
+.kteam__slide {
+  flex: 0 0 calc((100% - var(--kteam-gap)) / 2);
+  scroll-snap-align: start;
+  display: flex;
+}
+.kteam__slide > .team-member {
+  flex: 1;
+  min-width: 0;
+}
+.kteam__slide .team-member__name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Controls: dots left, pause + arrows right */
+.kteam__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
+}
+.kteam__dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.kteam__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(var(--ink) / 0.18);
+  cursor: pointer;
+  transition:
+    width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.35s ease;
+}
+.kteam__dot:hover {
+  background: rgb(var(--ink) / 0.4);
+}
+.kteam__dot.is-active {
+  width: 26px;
+  background: var(--krops-orange);
+}
+.kteam__buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.kteam__btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgb(var(--ink) / 0.16);
+  background: var(--cream);
+  color: var(--forest);
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+.kteam__btn:hover {
+  background: var(--forest);
+  border-color: var(--forest);
+  color: var(--cream);
+}
+.kteam__btn--toggle {
+  width: 36px;
+  height: 36px;
+  margin-right: 4px;
+}
+.kteam__btn:focus-visible,
+.kteam__dot:focus-visible {
+  outline: 2px solid var(--krops-orange);
+  outline-offset: 3px;
+}
+.kteam__btn[hidden] {
+  display: none;
+}
+
+/* Phones: one person per view with the next card peeking in. */
+@media (max-width: 768px) {
+  .kteam__slide {
+    flex-basis: 84%;
+  }
+  .kteam__dot {
+    width: 7px;
+    height: 7px;
+  }
+  .kteam__dot.is-active {
+    width: 20px;
+  }
+}
+.team__title[data-astro-cid-th3xyikx] {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+}
+
+/* ============================================================
+   Dark mode
+   The resolved theme is set on <html data-theme> before first paint
+   (src/app/layout.tsx): the visitor's choice from the nav toggle, else the
+   system setting. The template colours almost everything through these
+   palette tokens, so dark mode is mostly a token swap.
+   ============================================================ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --cream: #101113;   /* page background (was light) */
+  --forest: #f1f1ef;  /* primary text (was near-black) */
+  --mist: #1c1d20;    /* raised surfaces / cards */
+  --moss: #a6a9ae;    /* secondary text */
+  --sage: #4b4e53;    /* borders, inactive */
+  --white-40: #ffffff1f;
+  --ink: 241 241 239;
+  --kt-surface: #101113; /* "Cara kerja" section */
+}
+
+/* Things that sit on photos/video (or are dark by design) keep the palette
+   they were designed with, whatever the theme: the hero, footer, preloader,
+   the nav while it floats over the hero (data-mode="dark"), and the dark /
+   textured principle cards. The mobile menu panel is dark by design too,
+   and so is the nav on top of it while it is open. */
+:root[data-theme="dark"] :is(.hs, .closer, .preloader, .nav-root[data-mode="dark"], .nav-mobile, .prin-card--dark, .prin-card--wide),
+:root[data-theme="dark"].nav-mobile-open .nav-root {
+  --cream: #fafaf9;
+  --forest: #141517;
+  --mist: #ececea;
+  --moss: #3c3e42;
+  --sage: #a9abaf;
+  --ink: 20 21 23;
+  /* Semantic tokens resolve at :root, so re-derive them here too. */
+  --text: var(--forest);
+  --text-2: var(--moss);
+  --text-3: var(--sage);
+  --text-inverse: var(--cream);
+  --bg: var(--cream);
+  --bg-2: var(--mist);
+  --bg-3: var(--moss);
+  --bg-inverse: var(--forest);
+  --bg-extra: var(--sage);
+  --border: var(--sage);
+}
+
+/* The hero's outer frame (the section showing around the rounded video
+   card) goes black with the page in dark mode. */
+:root[data-theme="dark"] .hs[data-astro-cid-dd44gz66] {
+  background: #101113;
+}
+
+/* "Cara kerja": the ported Brumby section paints itself white. */
+:root[data-theme="dark"] .bh .section--white,
+:root[data-theme="dark"] .bh .section--white .how__node b {
+  background: var(--cream);
+}
+
+/* ---------- Theme toggle (nav) ---------- */
+.nav-theme {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  flex-shrink: 0;
+  cursor: pointer;
+  color: inherit;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  transition: background-color var(--dur-mid) var(--ease-out-expo);
+}
+/* Over the (dark) open mobile menu, like the logo. */
+html.nav-mobile-open .nav-theme {
+  color: var(--cream);
+}
+.nav-theme:hover {
+  background: color-mix(in srgb, currentColor 22%, transparent);
+}
+.nav-theme:focus-visible {
+  outline: 2px solid var(--krops-orange);
+  outline-offset: 3px;
+}
+.nav-theme__icon {
+  grid-area: 1 / 1;
+  transition:
+    opacity 0.3s ease,
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* Show the icon of the theme you would switch TO. */
+.nav-theme__icon--sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
+}
+:root[data-theme="dark"] .nav-theme__icon--sun {
+  opacity: 1;
+  transform: none;
+}
+:root[data-theme="dark"] .nav-theme__icon--moon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.6);
+}
+
+/* Cross-fade the whole page when switching (View Transitions, where
+   supported) instead of every element animating its own colours. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   Untuk siapa — [16:9 field video | explanation], video shared by tabs
+   ============================================================ */
+.builtfor__title[data-astro-cid-zuw4alt4] {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+  /* Krops Type is wider than Geist: give it room, then balance the lines */
+  max-width: 860px;
+  text-wrap: balance;
+}
+.kbf__grid {
+  display: grid;
+  /* 4:3 video + explanation card; equal heights */
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: 16px;
+  width: 100%;
+  align-items: stretch;
+}
+.kbf__media {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--mist);
+}
+.kbf__poster img,
+.kbf__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.kbf__video {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.kbf__video.is-playing {
+  opacity: 1;
+}
+.kbf__copy {
+  min-width: 0;
+  height: 100%;
+}
+.kbf__copy .benefits__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  font-size: 24px;
+  max-width: 18ch;
+}
+/* Audience label + sentence per row */
+.kbf__row {
+  display: grid;
+  gap: 6px;
+}
+.kbf__who {
+  font: 400 12px/1 var(--font-mono);
+  text-transform: uppercase;
+  color: var(--krops-orange);
+}
+.kbf__ctas {
+  height: auto;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+/* Stack below ~1100px: the copy column gets too narrow beside a 4:3 video. */
+@media (max-width: 1100px) {
+  .kbf__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .kbf__copy {
+    height: auto;
+  }
+}
+
+/* ============================================================
+   Rencana berikutnya — template's principles layout, all photo cards
+   ============================================================ */
+.prin__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+}
+.knp__lede {
+  margin: 0;
+  max-width: 36ch;
+  font: 400 15px/1.45 var(--font-sans);
+  letter-spacing: -0.01em;
+  color: var(--moss);
+}
+/* Sizes are the template's: tall card min 400px, right card fills the
+   group above the 92px strip, wide card 300px. */
+.prin-card--photo {
+  color: #fafaf9;
+}
+.knp-card--air {
+  min-height: 0;
+}
+.prin-card--photo .prin-card__dot {
+  background: var(--krops-orange);
+}
+/* Text sits at the bottom over a darker gradient, so the render stays
+   visible at the top. */
+.prin-card--photo .prin-card__scrim {
+  background: linear-gradient(180deg, rgb(20 21 23 / 0.05) 35%, rgb(20 21 23 / 0.78) 100%);
+}
+.prin-card--photo .prin-card__stack {
+  position: relative;
+  z-index: 2;
+  min-height: 0;
+  justify-content: flex-end;
+  gap: 12px;
+}
+.prin-card--photo .prin-card__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 26px;
+  letter-spacing: -0.01em;
+  color: #fafaf9;
+}
+.prin-card--photo .prin-card__body {
+  font-size: 15px;
+  color: rgb(250 250 249 / 0.82);
+  max-width: 44ch;
+}
+.knp__tag {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgb(20 21 23 / 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fafaf9;
+  font: 400 11px/1 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.knp__tag::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--krops-orange);
+}
+.prin-card--photo .prin-card__bg {
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.prin-card--photo:hover .prin-card__bg {
+  transform: scale(1.03);
+}
+/* Phones: the template flattens the group (display: contents) and orders
+   tall card -> strip -> text card; keep that order for the photo cards. */
+@media (max-width: 768px) {
+  .knp-card--ground {
+    order: 1;
+  }
+  .knp-card--air {
+    order: 3;
+    min-height: 320px;
+  }
+  .prin-card--photo .prin-card__title {
+    font-size: 22px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .prin-card--photo .prin-card__bg {
+    transition: none;
+  }
+}
+
+/* ============================================================
+   Footer (closer) typography
+   ============================================================ */
+/* Krops Type is ~25% wider than Geist: smaller size, normal tracking and a
+   wider measure keep the headline on 2 lines at desktop. One fluid size
+   replaces the template's 56/40/… steps. */
+.closer__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(28px, 3.9vw, 54px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  max-width: 21ch;
+  text-wrap: balance;
+}
+.kcl__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+/* Link row: same mono caps as the nav, a touch more breathing room. */
+.closer__links {
+  letter-spacing: 0.02em;
+}
+
+/* Contact modal title in the display face, like the other section titles. */
+.cm__title[data-astro-cid-nxxydibx] {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}

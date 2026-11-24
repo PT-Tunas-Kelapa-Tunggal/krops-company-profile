@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="103px" height="159px" viewBox="0 0 103 159" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>krops-logomark-orange</title>
+    <defs>
+        <path d="M35,42 L68,42 L68,159 L35,159 Z M35,0 L68,0 L68,35 L35,35 Z M0,18 L28,18 L28,100 L0,100 Z M75,18 L103,18 L103,100 L75,100 Z" id="path-1"></path>
+    </defs>
+    <g id="krops-logomark-orange" stroke="none" fill="none" xlink:href="#path-1" fill-rule="evenodd">
+        <rect id="Batang" fill="#FF4F18" x="35" y="42" width="33" height="117"></rect>
+        <rect id="Titik" fill="#FF4F18" x="35" y="0" width="33" height="35"></rect>
+        <rect id="Sisi-Kiri" fill="#FF4F18" x="0" y="18" width="28" height="82"></rect>
+        <rect id="Sisi-Kanan" fill="#FF4F18" x="75" y="18" width="28" height="82"></rect>
+    </g>
+</svg>
