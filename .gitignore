@@ -45,6 +45,8 @@ next-env.d.ts
 temp/
 
 # Raw source material (originals of what is in public/assets; large, kept
-# locally — re-export with scripts/video-to-web.swift etc.)
-KROPS/
-krops-team/
+# locally — re-export with scripts/video-to-web.swift etc.).
+# Anchored with a leading "/": macOS/Windows file systems are
+# case-insensitive, so a bare "KROPS/" would also hide src/components/krops/.
+/KROPS/
+/krops-team/
